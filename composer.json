@@ -6,7 +6,7 @@
   "type": "craft-plugin",
   "minimum-stability": "dev",
   "require": {
-    "craftcms/cms": "^5.0.0-beta.6"
+    "craftcms/cms": "^5.0.0"
   },
   "autoload": {
     "psr-4": {
