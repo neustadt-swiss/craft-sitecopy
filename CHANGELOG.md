@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1 - 2024-04-10
+
+### Changed
+
+- Updated dependency to Craft CMS 5.0.0 stable from beta
+
 ## 2.0.0 - 2024-03-11
 
 ### Changed
