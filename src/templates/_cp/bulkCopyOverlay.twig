@@ -1,0 +1,42 @@
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("goldinteractive\\sitecopy\\assetbundles\\sitecopy\\SitecopyAsset") %}
+
+{% set siteCopyTargetOptions = craft.sitecopy.getSiteInputOptions(supportedSites, [siteId]) %}
+
+
+<div class="body" style="overflow-y: scroll; max-height: 100%;">
+    <form method="post" id="sitecopy-form">
+        {{ csrfInput() }}
+
+        <div class="main">
+            {% if siteCopyTargetOptions is not empty %}
+                <div id="sitecopy" class="meta pane">
+                    <div class="{{ siteCopyEnabled ? '' : 'hidden' }}" id="sitecopy-options">
+                        {{ forms.checkboxGroupField({
+                            label: "To which site should the elements be copied?"|t('site-copy-x'),
+                            id: 'siteCopy-targets',
+                            name: 'sitecopy[targets]',
+                            options: siteCopyTargetOptions,
+                            values: selectedSites ?? [],
+                        }) }}
+                        {{ forms.hidden({
+                            id: 'siteCopy-sourceSite',
+                            name: 'sitecopy[sourceSite]',
+                            value: currentSite ? currentSite.id : null,
+                        }) }}
+                        {{ forms.hidden({
+                            id: 'siteCopy-enabled',
+                            name: 'sitecopy[enabled]',
+                            value: siteCopyEnabled,
+                        }) }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="buttons right">
+            <input type="button" class="btn cancel" value="{{ 'Cancel'|t }}">
+            <input type="submit" class="btn submit" name="submit" value="{{ 'Submit'|t }}">
+        </div>
+    </form>
+</div>

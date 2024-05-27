@@ -16,9 +16,11 @@ use craft\elements\Entry;
 use craft\elements\GlobalSet;
 use craft\events\DefineHtmlEvent;
 use craft\events\ElementEvent;
+use craft\events\RegisterElementActionsEvent;
 use craft\services\Elements;
 use craft\web\twig\variables\CraftVariable;
 use Exception;
+use goldinteractive\sitecopy\elements\actions\BulkCopy;
 use goldinteractive\sitecopy\models\SettingsModel;
 use yii\base\Event;
 
@@ -64,6 +66,19 @@ class SiteCopy extends Plugin
                     }
                 }
             );
+
+            Event::on(
+                Entry::class,
+                Element::EVENT_REGISTER_ACTIONS,
+                function(RegisterElementActionsEvent $event) {
+                    // every id can be in another section on overview, for the moment we only activate the feature if a specific section is selected
+                    if (strpos($event->source, 'section:' !== false)) {
+                        $event->actions[] = BulkCopy::class;
+                    }
+
+                }
+            );
+
 
             Craft::$app->view->hook(
                 'cp.globals.edit.content',

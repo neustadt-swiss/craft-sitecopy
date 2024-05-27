@@ -9,7 +9,6 @@ namespace goldinteractive\sitecopy\services;
 use Craft;
 use craft\base\Component;
 use craft\base\Element;
-use craft\base\Model;
 use craft\elements\Asset;
 use craft\elements\Category;
 use craft\elements\db\ElementQuery;
@@ -35,13 +34,6 @@ class SiteCopy extends Component
      * @var SettingsModel|null
      */
     private $settings = null;
-
-    public function init(): void
-    {
-        parent::init();
-
-        $this->settings = \goldinteractive\sitecopy\SiteCopy::getInstance()->getSettings();
-    }
 
     public static function getCriteriaFieldsEntries()
     {
@@ -115,12 +107,12 @@ class SiteCopy extends Component
         ];
     }
 
-    /**
-     * Indicates if we are already syncing
-     *
-     * @var bool
-     */
-    private static $syncing = false;
+    public function init(): void
+    {
+        parent::init();
+
+        $this->settings = \goldinteractive\sitecopy\SiteCopy::getInstance()->getSettings();
+    }
 
     /**
      * Get list of sites to sync to.
@@ -147,9 +139,9 @@ class SiteCopy extends Component
 
                     if ($user->can('editsite:' . $site->uid)) {
                         $site = [
-                            'label' => $site->name,
-                            'value' => $site->id,
-                            'groupId' => $site->groupId,
+                            'label'           => $site->name,
+                            'value'           => $site->id,
+                            'groupId'         => $site->groupId,
                             'inputAttributes' => ['onclick' => 'updateSitecopyToggleAll(this)'],
                         ];
                     } else {
@@ -173,10 +165,10 @@ class SiteCopy extends Component
 
         if (count($sites) > 1) {
             array_unshift($sites, [
-                'id' => 'sitecopy-toggle-all',
-                'label' => Craft::t('site-copy-x', 'Select all'),
-                'value' => '',
-                'groupId' => null,
+                'id'              => 'sitecopy-toggle-all',
+                'label'           => Craft::t('site-copy-x', 'Select all'),
+                'value'           => '',
+                'groupId'         => null,
                 'inputAttributes' => ['onclick' => 'toggleSitecopyTargets(this)'],
             ]);
         }
@@ -237,13 +229,6 @@ class SiteCopy extends Component
         if ($entry->siteId != $elementSettings['sourceSite']) {
             return;
         }
-
-        if (self::$syncing) {
-            return;
-        }
-
-        // we only want to add our task to the queue once
-        self::$syncing = true;
 
         // elementSettings will be null in HUD, where we want to continue with defaults
         if ($elementSettings !== null && ($event->isNew || empty($elementSettings['enabled']))) {
@@ -310,11 +295,23 @@ class SiteCopy extends Component
                 'attributesToCopy' => $attributesToCopy,
             ]);
 
-            Craft::$app->onAfterRequest(function() use ($job) {
+            Craft::$app->onAfterRequest(function () use ($job) {
                 $priority = (int)$this->settings->combinedSettingsQueuePriority;
                 Queue::push($job, $priority);
             });
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributesToCopy()
+    {
+        if ($this->settings && isset($this->settings->attributesToCopy) && is_array($this->settings->attributesToCopy)) {
+            return $this->settings->attributesToCopy;
+        }
+
+        return [];
     }
 
     public function getSerializedFieldValues(Entry|craft\commerce\elements\Product|Asset|GlobalSet|Category $element)
@@ -415,18 +412,6 @@ class SiteCopy extends Component
             'siteCopyEnabled' => $siteCopyEnabled,
             'selectedSites'   => $selectedSites,
         ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getAttributesToCopy()
-    {
-        if ($this->settings && isset($this->settings->attributesToCopy) && is_array($this->settings->attributesToCopy)) {
-            return $this->settings->attributesToCopy;
-        }
-
-        return [];
     }
 
     /**
