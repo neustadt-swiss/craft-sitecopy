@@ -14,6 +14,7 @@ use craft\elements\Category;
 use craft\elements\db\ElementQuery;
 use craft\elements\Entry;
 use craft\elements\GlobalSet;
+use craft\enums\PropagationMethod;
 use craft\events\ElementEvent;
 use craft\helpers\ElementHelper;
 use craft\helpers\Queue;
@@ -283,6 +284,8 @@ class SiteCopy extends Component
             $matchingTarget = in_array($siteId, $targets);
 
             if ($siteElement && $matchingTarget) {
+                $matchingSites[] = (int)$siteId;
+            }elseif($entry->section->propagationMethod == PropagationMethod::Custom && $matchingTarget) {
                 $matchingSites[] = (int)$siteId;
             }
         }

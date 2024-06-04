@@ -8,6 +8,8 @@ namespace goldinteractive\sitecopy\jobs;
 
 use Craft;
 use craft\base\Element;
+use craft\elements\Entry;
+use craft\enums\PropagationMethod;
 use craft\queue\BaseJob;
 use goldinteractive\sitecopy\SiteCopy;
 use yii\web\ServerErrorHttpException;
@@ -94,6 +96,29 @@ class SyncElementContent extends BaseJob
         $currentSite = 0;
         $mutex = Craft::$app->getMutex();
 
+        $supportedSites = $sourceElement->getSupportedSites();
+
+        if ($sourceElement instanceof Entry && $sourceElement->section->propagationMethod === PropagationMethod::Custom) {
+            $enabled = [];
+
+            foreach ($supportedSites as $site) {
+                $siteElement = $elementsService->getElementById($sourceElement->id, get_class($sourceElement), $site['siteId']);
+
+                if (in_array($site['siteId'], $this->sites)) {
+                    $enabled[$site['siteId']] = $sourceElement->getEnabledForSite(); // set it to the current enabled status (even if its false, craft should create the entry in the new site)
+                } elseif ($siteElement) {
+                    $enabled[$site['siteId']] = $siteElement->getEnabledForSite();
+                }
+            }
+
+            $sourceElement->setEnabledForSite($enabled);
+            $success = Craft::$app->getElements()->saveElement($sourceElement);
+
+            if (!$success) {
+                throw new \Exception('Couldn\'t save element ' . $sourceElement->id . '. Maybe the entry has a validation error?');
+            }
+        }
+
         foreach ($this->sites as $siteId) {
             $this->setProgress($queue, $currentSite / $totalSites, Craft::t('app', '{step} of {total}', [
                 'step'  => $currentSite + 1,
@@ -132,7 +157,8 @@ class SyncElementContent extends BaseJob
 
             try {
                 $elementsService->saveElement($siteElement);
-            } finally {
+            }
+            finally {
                 $mutex->release($lockKey);
             }
 

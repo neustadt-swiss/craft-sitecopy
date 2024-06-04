@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Added a bulk copy feature for entries on the element index view
+
+### Changed
+- If an entry doesn't exist yet and the propagation method is set to "Let each entry choose which sites it should be saved to", Site Copy X can now propagate the entry to the new site.
+
 ## 2.0.1 - 2024-04-10
 
 ### Changed

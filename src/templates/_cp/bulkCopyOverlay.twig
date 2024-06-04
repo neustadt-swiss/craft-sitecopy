@@ -1,7 +1,5 @@
 {% import "_includes/forms" as forms %}
 
-{% do view.registerAssetBundle("goldinteractive\\sitecopy\\assetbundles\\sitecopy\\SitecopyAsset") %}
-
 {% set siteCopyTargetOptions = craft.sitecopy.getSiteInputOptions(supportedSites, [siteId]) %}
 
 
@@ -11,7 +9,7 @@
 
         <div class="main">
             {% if siteCopyTargetOptions is not empty %}
-                <div id="sitecopy" class="meta pane">
+                <div id="sitecopy" class="pane">
                     <div class="{{ siteCopyEnabled ? '' : 'hidden' }}" id="sitecopy-options">
                         {{ forms.checkboxGroupField({
                             label: "To which site should the elements be copied?"|t('site-copy-x'),
@@ -23,7 +21,7 @@
                         {{ forms.hidden({
                             id: 'siteCopy-sourceSite',
                             name: 'sitecopy[sourceSite]',
-                            value: currentSite ? currentSite.id : null,
+                            value: siteId,
                         }) }}
                         {{ forms.hidden({
                             id: 'siteCopy-enabled',

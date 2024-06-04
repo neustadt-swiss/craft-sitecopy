@@ -4,6 +4,7 @@ namespace goldinteractive\sitecopy\elements\actions;
 
 use Craft;
 use craft\base\ElementAction;
+use goldinteractive\sitecopy\assetbundles\sitecopy\SitecopyAsset;
 
 /**
  * Bulk Copy element action
@@ -12,16 +13,19 @@ class BulkCopy extends ElementAction
 {
     public static function displayName(): string
     {
-        return Craft::t('site-copy-x', 'Bulk Copy');
+        return Craft::t('site-copy-x', 'Bulk copy');
     }
 
     public function getTriggerHtml(): ?string
     {
+        Craft::$app->getView()->registerAssetBundle(SitecopyAsset::class);
         Craft::$app->getView()->registerJsWithVars(fn($type) => <<<JS
         (() => {
             const openSitecopyModal = (elementIndex, htmlContent) => {
                 const \$html = $('<div class="modal">' + htmlContent + '</div>');
                 const modal = new Garnish.Modal(\$html);
+                modal.desiredWidth = 700;
+                modal.desiredHeight = 600;
                 modal.show();
 
                 \$html.find('.cancel').on('click', () => {
@@ -44,8 +48,8 @@ class BulkCopy extends ElementAction
                 Craft.sendActionRequest('POST', 'site-copy-x/api/bulk-copy', { data: formData })
                     .then((res) => {
                         if (res.data.success) {
-                            Craft.elementIndex.updateElements();
-                            modal.hide();
+                            // reload to trigger the queue if it's run automatically
+                            location.reload();
                         } else {
                             console.error('Failed to copy: ', res);
                         }

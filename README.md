@@ -1,4 +1,4 @@
-# Site Copy X for Craft CMS 4
+# Site Copy X for Craft CMS 5
 
 This plugin makes it easy to copy the content of an entry from a site to another.
 
@@ -9,6 +9,9 @@ This plugin makes it easy to copy the content of an entry from a site to another
 - Assets
 - Categories
 - Craft commerce products
+
+> **_NOTE:_** This plugin only works with elements that can be propagated to other sites. If the propagation method is set to "Only save entries to the site they were created in", we cannot copy the element.
+
 
 ## Using the Site Copy X plugin
 
@@ -35,6 +38,12 @@ In addition to entries, you can also copy global sets and assets. For global set
 
 This plugin is compatible with Craft Commerce products.
 
+### Bulk copy
+
+If you select entries on their index views, you will be able to bulk copy them over to another site.
+
+![Screenshot](resources/screenshots/bulk-copy.png)
+
 ### Choose the content you want to be copied
 In the plugin settings you can configure the content that gets copied from the current entry.
 Per default it copies only the entries content (without meta data like title and slug)
@@ -49,7 +58,7 @@ to be copied to a specific site.
 
 ## Requirements
 
-This plugin requires Craft CMS 4.5.11 or later.
+This plugin requires Craft CMS 5.0.0 or later.
 
 ## Installation
 

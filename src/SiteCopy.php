@@ -6,20 +6,19 @@
 
 namespace goldinteractive\sitecopy;
 
+use Craft;
 use craft\base\Element;
 use craft\base\Plugin;
-
-use Craft;
 use craft\elements\Asset;
 use craft\elements\Category;
 use craft\elements\Entry;
 use craft\elements\GlobalSet;
+use craft\enums\PropagationMethod;
 use craft\events\DefineHtmlEvent;
 use craft\events\ElementEvent;
 use craft\events\RegisterElementActionsEvent;
 use craft\services\Elements;
 use craft\web\twig\variables\CraftVariable;
-use Exception;
 use goldinteractive\sitecopy\elements\actions\BulkCopy;
 use goldinteractive\sitecopy\models\SettingsModel;
 use yii\base\Event;
@@ -70,15 +69,23 @@ class SiteCopy extends Plugin
             Event::on(
                 Entry::class,
                 Element::EVENT_REGISTER_ACTIONS,
-                function(RegisterElementActionsEvent $event) {
+                function (RegisterElementActionsEvent $event) {
                     // every id can be in another section on overview, for the moment we only activate the feature if a specific section is selected
-                    if (strpos($event->source, 'section:' !== false)) {
-                        $event->actions[] = BulkCopy::class;
-                    }
+                    if (strpos($event->source, 'section:') !== false) {
+                        try {
+                            $sectionUid = explode('section:', $event->source)[1];
 
+                            $section = Craft::$app->getEntries()->getSectionByUid($sectionUid);
+
+                            if ($section && $section->propagationMethod !== PropagationMethod::None) {
+                                $event->actions[] = BulkCopy::class;
+                            }
+                        } catch (\Exception $e) {
+                            Craft::error($e->getMessage());
+                        }
+                    }
                 }
             );
-
 
             Craft::$app->view->hook(
                 'cp.globals.edit.content',
@@ -105,28 +112,6 @@ class SiteCopy extends Plugin
                 }
             );
         }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function createSettingsModel(): ?\craft\base\Model
-    {
-        return new SettingsModel();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function settingsHtml(): ?string
-    {
-        return Craft::$app->getView()->renderTemplate('site-copy-x/_cp/settings', [
-            'settings'                    => $this->getSettings(),
-            'criteriaFieldOptionsEntries' => services\SiteCopy::getCriteriaFieldsEntries(),
-            'criteriaFieldOptionsGlobals' => services\SiteCopy::getCriteriaFieldsGlobals(),
-            'criteriaFieldOptionsAssets'  => services\SiteCopy::getCriteriaFieldsAssets(),
-            'criteriaOperatorOptions'     => services\SiteCopy::getOperators(),
-        ]);
     }
 
     /**
@@ -162,5 +147,27 @@ class SiteCopy extends Plugin
                 'currentSite'     => $currentSite,
             ]
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function createSettingsModel(): ?\craft\base\Model
+    {
+        return new SettingsModel();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function settingsHtml(): ?string
+    {
+        return Craft::$app->getView()->renderTemplate('site-copy-x/_cp/settings', [
+            'settings'                    => $this->getSettings(),
+            'criteriaFieldOptionsEntries' => services\SiteCopy::getCriteriaFieldsEntries(),
+            'criteriaFieldOptionsGlobals' => services\SiteCopy::getCriteriaFieldsGlobals(),
+            'criteriaFieldOptionsAssets'  => services\SiteCopy::getCriteriaFieldsAssets(),
+            'criteriaOperatorOptions'     => services\SiteCopy::getOperators(),
+        ]);
     }
 }
