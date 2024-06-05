@@ -9,6 +9,7 @@ namespace goldinteractive\sitecopy;
 use Craft;
 use craft\base\Element;
 use craft\base\Plugin;
+use craft\commerce\elements\Product;
 use craft\elements\Asset;
 use craft\elements\Category;
 use craft\elements\Entry;
@@ -65,6 +66,29 @@ class SiteCopy extends Plugin
                     }
                 }
             );
+
+            Event::on(
+                Asset::class,
+                Element::EVENT_REGISTER_ACTIONS,
+                function (RegisterElementActionsEvent $event) {
+                    $event->actions[] = new BulkCopy();
+                });
+
+            Event::on(
+                Product::class,
+                Element::EVENT_REGISTER_ACTIONS,
+                function (RegisterElementActionsEvent $event) {
+                    if (strpos($event->source, 'productType:') !== false) {
+                        $event->actions[] = new BulkCopy();
+                    }
+                });
+
+            Event::on(
+                Category::class,
+                Element::EVENT_REGISTER_ACTIONS,
+                function (RegisterElementActionsEvent $event) {
+                    $event->actions[] = new BulkCopy();
+                });
 
             Event::on(
                 Entry::class,

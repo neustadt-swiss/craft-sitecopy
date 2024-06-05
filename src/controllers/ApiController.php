@@ -3,6 +3,7 @@
 namespace goldinteractive\sitecopy\controllers;
 
 use Craft;
+use craft\elements\Entry;
 use craft\enums\PropagationMethod;
 use craft\events\ElementEvent;
 use craft\web\Controller;
@@ -30,7 +31,7 @@ class ApiController extends Controller
         $supportedSites = [];
 
         foreach ($elements as $element) {
-            if ($element->section->propagationMethod === PropagationMethod::None) {
+            if ($element instanceof Entry && $element->section?->propagationMethod === PropagationMethod::None) {
                 return $this->asJson([
                     'html'    => '',
                     'success' => false,
@@ -75,7 +76,7 @@ class ApiController extends Controller
             foreach ($elements as $element) {
                 $event = new ElementEvent([
                     'element' => $element,
-                    'isNew' => false,
+                    'isNew'   => false,
                 ]);
 
                 SiteCopy::getInstance()->sitecopy->syncElementContent($event, $sitecopySettings);

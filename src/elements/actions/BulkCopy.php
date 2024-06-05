@@ -13,7 +13,7 @@ class BulkCopy extends ElementAction
 {
     public static function displayName(): string
     {
-        return Craft::t('site-copy-x', 'Bulk copy');
+        return Craft::t('site-copy-x', 'Copy to site');
     }
 
     public function getTriggerHtml(): ?string
