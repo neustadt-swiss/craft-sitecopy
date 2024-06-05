@@ -31,7 +31,7 @@ class ApiController extends Controller
         $supportedSites = [];
 
         foreach ($elements as $element) {
-            if ($element instanceof Entry && $element->section?->propagationMethod === PropagationMethod::None) {
+            if ($element instanceof Entry && $element->section && !$element->section->getHasMultiSiteEntries()) {
                 return $this->asJson([
                     'html'    => '',
                     'success' => false,

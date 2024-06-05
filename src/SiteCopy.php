@@ -14,7 +14,6 @@ use craft\elements\Asset;
 use craft\elements\Category;
 use craft\elements\Entry;
 use craft\elements\GlobalSet;
-use craft\enums\PropagationMethod;
 use craft\events\DefineHtmlEvent;
 use craft\events\ElementEvent;
 use craft\events\RegisterElementActionsEvent;
@@ -55,86 +54,90 @@ class SiteCopy extends Plugin
                 }
             );
 
-            Event::on(
-                Element::class,
-                Element::EVENT_DEFINE_SIDEBAR_HTML,
-                function (DefineHtmlEvent $event) {
-                    $element = $event->sender;
+            if (Craft::$app->getIsMultiSite()) {
 
-                    if (in_array(get_class($element), [Entry::class, Asset::class, 'craft\commerce\elements\Product', Category::class])) {
-                        $event->html .= $this->addSitecopyWidget($event->sender);
-                    }
-                }
-            );
+                Event::on(
+                    Element::class,
+                    Element::EVENT_DEFINE_SIDEBAR_HTML,
+                    function (DefineHtmlEvent $event) {
+                        $element = $event->sender;
 
-            Event::on(
-                Asset::class,
-                Element::EVENT_REGISTER_ACTIONS,
-                function (RegisterElementActionsEvent $event) {
-                    $event->actions[] = new BulkCopy();
-                });
-
-            Event::on(
-                Product::class,
-                Element::EVENT_REGISTER_ACTIONS,
-                function (RegisterElementActionsEvent $event) {
-                    if (strpos($event->source, 'productType:') !== false) {
-                        $event->actions[] = new BulkCopy();
-                    }
-                });
-
-            Event::on(
-                Category::class,
-                Element::EVENT_REGISTER_ACTIONS,
-                function (RegisterElementActionsEvent $event) {
-                    $event->actions[] = new BulkCopy();
-                });
-
-            Event::on(
-                Entry::class,
-                Element::EVENT_REGISTER_ACTIONS,
-                function (RegisterElementActionsEvent $event) {
-                    // every id can be in another section on overview, for the moment we only activate the feature if a specific section is selected
-                    if (strpos($event->source, 'section:') !== false) {
-                        try {
-                            $sectionUid = explode('section:', $event->source)[1];
-
-                            $section = Craft::$app->getEntries()->getSectionByUid($sectionUid);
-
-                            if ($section && $section->propagationMethod !== PropagationMethod::None) {
-                                $event->actions[] = BulkCopy::class;
-                            }
-                        } catch (\Exception $e) {
-                            Craft::error($e->getMessage());
+                        if (in_array(get_class($element), [Entry::class, Asset::class, 'craft\commerce\elements\Product', Category::class])) {
+                            $event->html .= $this->addSitecopyWidget($event->sender);
                         }
                     }
-                }
-            );
+                );
 
-            Craft::$app->view->hook(
-                'cp.globals.edit.content',
-                function (array &$context) {
-                    /** @var $element GlobalSet */
-                    $element = $context['globalSet'];
+                Event::on(
+                    Asset::class,
+                    Element::EVENT_REGISTER_ACTIONS,
+                    function (RegisterElementActionsEvent $event) {
+                        $event->actions[] = new BulkCopy();
+                    });
 
-                    return $this->addSitecopyWidget($element);
-                }
-            );
+                Event::on(
+                    Product::class,
+                    Element::EVENT_REGISTER_ACTIONS,
+                    function (RegisterElementActionsEvent $event) {
+                        if (strpos($event->source, 'productType:') !== false) {
+                            $event->actions[] = new BulkCopy();
+                        }
+                    });
 
-            Craft::$app->view->hook(
-                'cp.commerce.product.edit.details',
-                function (array &$context) {
-                    return $this->addSitecopyWidget($context['product']);
-                }
-            );
+                Event::on(
+                    Category::class,
+                    Element::EVENT_REGISTER_ACTIONS,
+                    function (RegisterElementActionsEvent $event) {
+                        $event->actions[] = new BulkCopy();
+                    });
 
-            Event::on(
-                Elements::class,
-                Elements::EVENT_AFTER_SAVE_ELEMENT,
-                function (ElementEvent $event) {
-                    $this->sitecopy->syncElementContent($event, Craft::$app->request->post('sitecopy', []));
-                }
-            );
+                Event::on(
+                    Entry::class,
+                    Element::EVENT_REGISTER_ACTIONS,
+                    function (RegisterElementActionsEvent $event) {
+                        // every id can be in another section on overview, for the moment we only activate the feature if a specific section is selected
+                        if (strpos($event->source, 'section:') !== false) {
+                            try {
+                                $sectionUid = explode('section:', $event->source)[1];
+
+                                $section = Craft::$app->getEntries()->getSectionByUid($sectionUid);
+
+                                if ($section && $section->getHasMultiSiteEntries()) {
+                                    $event->actions[] = BulkCopy::class;
+                                }
+                            } catch (\Exception $e) {
+                                Craft::error($e->getMessage());
+                            }
+                        }
+                    }
+                );
+
+
+                Craft::$app->view->hook(
+                    'cp.globals.edit.content',
+                    function (array &$context) {
+                        /** @var $element GlobalSet */
+                        $element = $context['globalSet'];
+
+                        return $this->addSitecopyWidget($element);
+                    }
+                );
+
+                Craft::$app->view->hook(
+                    'cp.commerce.product.edit.details',
+                    function (array &$context) {
+                        return $this->addSitecopyWidget($context['product']);
+                    }
+                );
+
+                Event::on(
+                    Elements::class,
+                    Elements::EVENT_AFTER_SAVE_ELEMENT,
+                    function (ElementEvent $event) {
+                        $this->sitecopy->syncElementContent($event, Craft::$app->request->post('sitecopy', []));
+                    }
+                );
+            }
         }
     }
 
