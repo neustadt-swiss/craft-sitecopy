@@ -98,7 +98,7 @@ class SyncElementContent extends BaseJob
 
         $supportedSites = $sourceElement->getSupportedSites();
 
-        if ($sourceElement instanceof Entry && $sourceElement->section->propagationMethod === PropagationMethod::Custom) {
+        if ($sourceElement instanceof Entry && $sourceElement->section?->propagationMethod === PropagationMethod::Custom) {
             $enabled = [];
 
             foreach ($supportedSites as $site) {

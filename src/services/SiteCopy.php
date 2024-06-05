@@ -285,7 +285,7 @@ class SiteCopy extends Component
 
             if ($siteElement && $matchingTarget) {
                 $matchingSites[] = (int)$siteId;
-            }elseif($entry->section->propagationMethod == PropagationMethod::Custom && $matchingTarget) {
+            }elseif($entry instanceof Entry && $entry->section?->propagationMethod == PropagationMethod::Custom && $matchingTarget) {
                 $matchingSites[] = (int)$siteId;
             }
         }
