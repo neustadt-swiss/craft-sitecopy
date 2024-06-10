@@ -54,8 +54,7 @@ class SiteCopy extends Plugin
                 }
             );
 
-            if (Craft::$app->getIsMultiSite()) {
-
+            if (Craft::$app->getIsMultiSite() && Craft::$app->getSites()->getTotalEditableSites() > 1) {
                 Event::on(
                     Element::class,
                     Element::EVENT_DEFINE_SIDEBAR_HTML,

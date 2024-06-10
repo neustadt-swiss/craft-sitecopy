@@ -4,7 +4,6 @@ namespace goldinteractive\sitecopy\controllers;
 
 use Craft;
 use craft\elements\Entry;
-use craft\enums\PropagationMethod;
 use craft\events\ElementEvent;
 use craft\web\Controller;
 use goldinteractive\sitecopy\SiteCopy;
@@ -47,6 +46,7 @@ class ApiController extends Controller
             [
                 'siteId'          => $siteId,
                 'supportedSites'  => $supportedSites,
+                'elementCount'    => count($elements),
                 'siteCopyEnabled' => 1,
                 'selectedSites'   => [],
                 'currentSite'     => Craft::$app->getSites()->getCurrentSite(),
@@ -85,6 +85,7 @@ class ApiController extends Controller
             return $this->asJson(['success' => true]);
         } catch (\Exception $e) {
             Craft::error('Error in bulk copy: ' . $e->getMessage(), __METHOD__);
+
             return $this->asJson(['success' => false, 'error' => $e->getMessage()]);
         }
     }
