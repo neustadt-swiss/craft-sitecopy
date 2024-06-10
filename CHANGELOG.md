@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.1.0 - 2024-06-10
 
 ### Added
 
@@ -9,7 +9,7 @@
 
 ### Changed
 
-- If an entry doesn't exist yet and the propagation method is set to "Let each entry choose which sites it should be saved to", Site Copy X can now propagate the entry to the new site.
+- If an entry doesn't exist yet and the propagation method is set to "Let each entry choose which sites it should be saved to", Site Copy X will now propagate the entry to the new site.
 
 ### Fixed
 
