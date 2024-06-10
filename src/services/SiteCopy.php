@@ -198,6 +198,10 @@ class SiteCopy extends Component
                 'label' => Craft::t('site-copy-x', 'Slug'),
             ],
             [
+                'value' => 'alt',
+                'label' => Craft::t('site-copy-x', 'Image Alt'),
+            ],
+            [
                 'value' => 'variants',
                 'label' => Craft::t('site-copy-x', 'Commerce Variants'),
             ],

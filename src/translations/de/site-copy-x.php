@@ -17,6 +17,7 @@ return [
     'Fields (Content)'  => 'Felder (Inhalt)',
     'Title'             => 'Titel',
     'Slug'              => 'Slug',
+    'Image Alt'         => 'Bild Alt',
     'Commerce Variants' => 'Commerce Varianten',
 
     'Entry id'            => 'Eintrags Id',

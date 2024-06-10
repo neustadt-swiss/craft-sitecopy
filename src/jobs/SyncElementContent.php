@@ -8,6 +8,7 @@ namespace goldinteractive\sitecopy\jobs;
 
 use Craft;
 use craft\base\Element;
+use craft\elements\Asset;
 use craft\elements\Entry;
 use craft\enums\PropagationMethod;
 use craft\queue\BaseJob;
@@ -85,6 +86,12 @@ class SyncElementContent extends BaseJob
                 }
 
                 $tmp = $variantFields;
+            }elseif($attribute == 'alt') {
+                if (!$sourceElement instanceof Asset) {
+                   continue;
+                }
+
+                $tmp = $sourceElement->{$attribute};
             } else {
                 $tmp = $sourceElement->{$attribute};
             }

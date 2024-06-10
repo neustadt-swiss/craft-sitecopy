@@ -14,7 +14,7 @@ class SettingsModel extends Model
     /**
      * @var array
      */
-    public $attributesToCopy = ['fields'];
+    public $attributesToCopy = ['fields', 'alt'];
 
     /**
      * @deprecated keep for migration
