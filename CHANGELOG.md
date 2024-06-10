@@ -3,11 +3,17 @@
 ## Unreleased
 
 ### Added
+
 - Added a bulk copy feature for entries on the element index view
 - Added a settings option to copy craft's native image alt field (enabled per default for new installs)
 
 ### Changed
+
 - If an entry doesn't exist yet and the propagation method is set to "Let each entry choose which sites it should be saved to", Site Copy X can now propagate the entry to the new site.
+
+### Fixed
+
+-  Fixed the copy of variant fields on save of the product
 
 ## 2.0.1 - 2024-04-10
 

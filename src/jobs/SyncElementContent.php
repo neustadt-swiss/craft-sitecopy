@@ -75,7 +75,7 @@ class SyncElementContent extends BaseJob
                     continue;
                 }
             } elseif ($attribute == 'variants') {
-                if (!$sourceElement instanceof craft\commerce\elements\Product || !$sourceElement->getType()->hasVariants) {
+                if (!$sourceElement instanceof craft\commerce\elements\Product || !$sourceElement->getType()->maxVariants > 1) {
                     continue;
                 }
 
