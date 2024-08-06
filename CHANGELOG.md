@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.1 - 2024-08-06
+
+### Fixed
+
+-  Fixed the toggle all checkbox and the styling in the element slideout container
+
 ## 2.1.0 - 2024-06-10
 
 ### Added

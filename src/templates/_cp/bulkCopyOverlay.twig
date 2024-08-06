@@ -9,8 +9,8 @@
 
         <div class="main">
             {% if siteCopyTargetOptions is not empty %}
-                <div id="sitecopy" class="pane">
-                    <div class="{{ siteCopyEnabled ? '' : 'hidden' }}" id="sitecopy-options">
+                <div class="pane sitecopy">
+                    <div class="{{ siteCopyEnabled ? '' : 'hidden' }} sitecopy-options" id="sitecopy-options">
                         {{ forms.checkboxGroupField({
                             label: elementCount > 1 ? "To which site should the elements be copied?"|t('site-copy-x') : "To which site should it be copied?"|t('site-copy-x'),
                             id: 'siteCopy-targets',

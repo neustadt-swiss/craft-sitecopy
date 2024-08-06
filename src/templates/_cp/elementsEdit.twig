@@ -5,7 +5,7 @@
 {% set siteCopyTargetOptions = craft.sitecopy.getSiteInputOptions(supportedSites, [siteId]) %}
 
 {% if siteCopyTargetOptions is not empty %}
-    <div id="sitecopy" class="meta pane">
+    <div class="meta pane sitecopy">
         {{ forms.lightswitchField({
             label: 'Copy to site'|t('site-copy-x'),
             id: 'siteCopy-toggle',
@@ -14,7 +14,7 @@
             toggle: '#sitecopy-options',
         }) }}
 
-        <div class="{{ siteCopyEnabled ? '' : 'hidden' }}" id="sitecopy-options">
+        <div class="{{ siteCopyEnabled ? '' : 'hidden' }} sitecopy-options" id="sitecopy-options">
             {{ forms.checkboxGroupField({
                 label: "To which site should it be copied?"|t('site-copy-x'),
                 id: 'siteCopy-targets',
