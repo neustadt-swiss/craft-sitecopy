@@ -1,7 +1,7 @@
 <?php
 /**
- * @link      https://www.goldinteractive.ch
- * @copyright Copyright (c) 2018 Gold Interactive
+ * @link      https://neustadt.swiss
+ * @copyright Copyright (c) Neustadt Agentur AG
  */
 
 return [

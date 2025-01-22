@@ -7,13 +7,13 @@
 - Site Copy X now requires Craft CMS 4.5.11
 
 ### Fixed
-- Fixed a database error that could occur when saving an entry while the copy-to-site job is running [#9](https://github.com/Goldinteractive/craft-sitecopy/issues/9)
+- Fixed a database error that could occur when saving an entry while the copy-to-site job is running [#9](https://github.com/neustadt-swiss/craft-sitecopy/issues/9)
 
 ## 1.0.10 - 2023-10-19
 
 ### Changed
 
-- The list of sites to copy to is now sorted by site group to provide a better ui for multisite setups [#6](https://github.com/Goldinteractive/craft-sitecopy/issues/6)
+- The list of sites to copy to is now sorted by site group to provide a better ui for multisite setups [#6](https://github.com/neustadt-swiss/craft-sitecopy/issues/6)
 
 
 ## 1.0.9 - 2023-10-16

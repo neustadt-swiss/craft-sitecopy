@@ -1,10 +1,9 @@
 <?php
 /**
- * @link      https://www.goldinteractive.ch
- * @copyright Copyright (c) 2018 Gold Interactive
+ * @link      https://neustadt.swiss
+ * @copyright Copyright (c) Neustadt Agentur AG
  */
-
-namespace goldinteractive\sitecopy\services;
+namespace neustadt\sitecopy\services;
 
 use Craft;
 use craft\base\Component;
@@ -20,14 +19,14 @@ use craft\helpers\ElementHelper;
 use craft\helpers\Queue;
 use craft\models\Site;
 use Exception;
-use goldinteractive\sitecopy\jobs\SyncElementContent;
-use goldinteractive\sitecopy\models\SettingsModel;
+use neustadt\sitecopy\jobs\SyncElementContent;
+use neustadt\sitecopy\models\SettingsModel;
 use Throwable;
 
 /**
  * Class SiteCopy
  *
- * @package goldinteractive\sitecopy\services
+ * @package neustadt\sitecopy\services
  */
 class SiteCopy extends Component
 {
@@ -40,7 +39,7 @@ class SiteCopy extends Component
     {
         parent::init();
 
-        $this->settings = \goldinteractive\sitecopy\SiteCopy::getInstance()->getSettings();
+        $this->settings = \neustadt\sitecopy\SiteCopy::getInstance()->getSettings();
     }
 
     public static function getCriteriaFieldsEntries()

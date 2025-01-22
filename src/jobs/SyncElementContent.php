@@ -1,21 +1,21 @@
 <?php
 /**
- * @link      https://www.goldinteractive.ch
- * @copyright Copyright (c) 2019 Gold Interactive
+ * @link      https://neustadt.swiss
+ * @copyright Copyright (c) Neustadt Agentur AG
  */
 
-namespace goldinteractive\sitecopy\jobs;
+namespace neustadt\sitecopy\jobs;
 
 use Craft;
 use craft\base\Element;
 use craft\queue\BaseJob;
-use goldinteractive\sitecopy\SiteCopy;
+use neustadt\sitecopy\SiteCopy;
 use yii\web\ServerErrorHttpException;
 
 /**
  * Class SyncElementContent
  *
- * @package goldinteractive\sitecopy\jobs
+ * @package neustadt\sitecopy\jobs
  */
 class SyncElementContent extends BaseJob
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace goldinteractive\sitecopy\migrations;
+namespace neustadt\sitecopy\migrations;
 
 use Craft;
 use craft\db\Migration;
-use goldinteractive\sitecopy\SiteCopy;
+use neustadt\sitecopy\SiteCopy;
 
 /**
  * m200811_123415_OrXorChange migration.

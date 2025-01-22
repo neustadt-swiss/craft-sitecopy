@@ -1,7 +1,7 @@
 {
-  "name": "goldinteractive/craft-sitecopy",
-  "description": "",
-  "version": "1.1.0",
+  "name": "nst/craft-sitecopy",
+  "description": "This plugin makes it easy to copy the content of an entry from a site to another",
+  "version": "3.0.0",
   "license": "proprietary",
   "type": "craft-plugin",
   "minimum-stability": "dev",
@@ -10,15 +10,15 @@
   },
   "autoload": {
     "psr-4": {
-      "goldinteractive\\sitecopy\\": "src/"
+      "neustadt\\sitecopy\\": "src/"
     }
   },
   "extra": {
     "handle": "site-copy-x",
     "name": "Site Copy X",
-    "developer": "Gold Interactive",
-    "developerUrl": "http://goldinteractive.ch",
-    "class": "goldinteractive\\sitecopy\\SiteCopy",
+    "developer": "Neustadt",
+    "developerUrl": "https://neustadt.swiss",
+    "class": "neustadt\\sitecopy\\SiteCopy",
     "hasSettings": true
   }
 }

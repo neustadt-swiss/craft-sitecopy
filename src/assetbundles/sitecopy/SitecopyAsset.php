@@ -1,6 +1,6 @@
 <?php
 
-namespace goldinteractive\sitecopy\assetbundles\sitecopy;
+namespace neustadt\sitecopy\assetbundles\sitecopy;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
@@ -15,7 +15,7 @@ class SitecopyAsset extends AssetBundle
      */
     public function init()
     {
-        $this->sourcePath = "@goldinteractive/sitecopy/assetbundles/sitecopy/dist";
+        $this->sourcePath = "@neustadt/sitecopy/assetbundles/sitecopy/dist";
 
         $this->depends = [
             CpAsset::class,

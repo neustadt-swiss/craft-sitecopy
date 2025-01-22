@@ -1,10 +1,10 @@
 <?php
 /**
- * @link      https://www.goldinteractive.ch
- * @copyright Copyright (c) 2018 Gold Interactive
+ * @link      https://neustadt.swiss
+ * @copyright Copyright (c) Neustadt Agentur AG
  */
 
-namespace goldinteractive\sitecopy;
+namespace neustadt\sitecopy;
 
 use craft\base\Element;
 use craft\base\Plugin;
@@ -19,11 +19,11 @@ use craft\events\ElementEvent;
 use craft\services\Elements;
 use craft\web\twig\variables\CraftVariable;
 use Exception;
-use goldinteractive\sitecopy\models\SettingsModel;
+use neustadt\sitecopy\models\SettingsModel;
 use yii\base\Event;
 
 /**
- * @author    Gold Interactive
+ * @author    Neustadt Agentur AG
  * @package   Site Copy X
  * @since     0.2.0
  *

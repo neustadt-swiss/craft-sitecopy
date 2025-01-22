@@ -53,4 +53,4 @@ This plugin requires Craft CMS 4.5.11 or later.
 
 ## Installation
 
-Install using `composer require goldinteractive/craft-sitecopy` 
+Install using `composer require nst/craft-sitecopy` 

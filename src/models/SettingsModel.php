@@ -1,13 +1,13 @@
 <?php
 /**
- * @link      https://www.goldinteractive.ch
- * @copyright Copyright (c) 2019 Gold Interactive
+ * @link      https://neustadt.swiss
+ * @copyright Copyright (c) Neustadt Agentur AG
  */
 
-namespace goldinteractive\sitecopy\models;
+namespace neustadt\sitecopy\models;
 
 use craft\base\Model;
-use goldinteractive\sitecopy\services\SiteCopy;
+use neustadt\sitecopy\services\SiteCopy;
 
 class SettingsModel extends Model
 {
@@ -64,7 +64,7 @@ class SettingsModel extends Model
      */
     public function checkAttributesToCopy()
     {
-        $attributesToCopy = \goldinteractive\sitecopy\SiteCopy::getInstance()->sitecopy->getAttributesToCopyOptions();
+        $attributesToCopy = \neustadt\sitecopy\SiteCopy::getInstance()->sitecopy->getAttributesToCopyOptions();
 
         $exactValues = [
             array_map(function ($x) {
