@@ -8,6 +8,7 @@
 
 ### Changed
 - Updated copyright and author information
+- Added official support for Craft CMS 5 (compatible with both Craft 4 and 5)
 
 ## 1.1.0 - 2024-01-22
 
