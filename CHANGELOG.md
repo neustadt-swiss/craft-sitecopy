@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 3.1.0 - 2026-06-09
+## 3.1.3 - 2026-06-09
 ### Fixed
 - Fixed Link field remapping - selected entries now correctly link to the target site instead of remaining linked to the source site
 - Improved element ID mapping across multiple sites
