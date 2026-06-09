@@ -10,7 +10,7 @@ use Craft;
 use craft\base\Element;
 use craft\queue\BaseJob;
 use neustadt\sitecopy\SiteCopy;
-use yii\web\ServerErrorHttpException;
+use Exception;
 
 /**
  * Class SyncElementContent
@@ -105,12 +105,16 @@ class SyncElementContent extends BaseJob
 
             foreach ($data as $key => $item) {
                 if ($key == 'fields') {
+                    // Remap linked elements to target site
+                    $item = $this->remapLinkedElements($item, $this->sourceSiteId, $siteId, $sourceElement);
                     $siteElement->setFieldValues($item);
                 } elseif ($key == 'variants') {
                     foreach ($item as $variantId => $value) {
                         $variant = craft\commerce\elements\Variant::find()->id($variantId)->siteId($siteId)->one();
 
                         if ($variant) {
+                            // Remap linked elements in variant fields
+                            $value = $this->remapLinkedElements($value, $this->sourceSiteId, $siteId, $variant);
                             $variant->setFieldValues($value);
 
                             $variant->setScenario(Element::SCENARIO_ESSENTIALS);
@@ -125,7 +129,7 @@ class SyncElementContent extends BaseJob
 
             $lockKey = "element:$siteElement->canonicalId";
             if (!$mutex->acquire($lockKey, 15)) {
-                throw new ServerErrorHttpException('Could not acquire a lock to save the element.');
+                throw new Exception('Could not acquire a lock to save the element.');
             }
 
             $siteElement->setScenario(Element::SCENARIO_ESSENTIALS);
@@ -142,6 +146,100 @@ class SyncElementContent extends BaseJob
 
     // Protected Methods
     // =========================================================================
+
+    /**
+     * Remap linked elements from source site to target site
+     *
+     * @param array $fieldValues The field values to remap
+     * @param int $sourceSiteId The source site ID
+     * @param int $targetSiteId The target site ID
+     * @param Element $element The element being synced
+     * @return array The remapped field values
+     */
+    protected function remapLinkedElements($fieldValues, $sourceSiteId, $targetSiteId, $element)
+    {
+        $fieldsService = Craft::$app->getFields();
+        $fieldLayout = $element->getFieldLayout();
+
+        foreach ($fieldValues as $fieldHandle => &$value) {
+            $field = $fieldLayout->getFieldByHandle($fieldHandle);
+
+            if ($field === null) {
+                continue;
+            }
+
+            // Check if this is a linking field (Relations or Link field)
+            $fieldClass = get_class($field);
+
+            // Handle different types of linking fields
+            if (
+                strpos($fieldClass, 'Relations') !== false ||
+                strpos($fieldClass, 'Link') !== false ||
+                method_exists($field, 'getTargetSiteId')
+            ) {
+                // For array values (multiple linked elements)
+                if (is_array($value)) {
+                    $value = $this->remapElementIds($value, $sourceSiteId, $targetSiteId);
+                }
+            }
+        }
+
+        return $fieldValues;
+    }
+
+    /**
+     * Remap element IDs from source site to target site
+     *
+     * @param array $elementIds Array of element IDs or element data
+     * @param int $sourceSiteId The source site ID
+     * @param int $targetSiteId The target site ID
+     * @return array The remapped element IDs
+     */
+    protected function remapElementIds($elementIds, $sourceSiteId, $targetSiteId)
+    {
+        if (empty($elementIds)) {
+            return $elementIds;
+        }
+
+        $remappedIds = [];
+
+        foreach ($elementIds as $item) {
+            // Handle both single IDs and objects/arrays with id property
+            $sourceId = is_array($item) || is_object($item) ? ($item['id'] ?? $item->id ?? $item) : $item;
+
+            if (!$sourceId) {
+                $remappedIds[] = $item;
+                continue;
+            }
+
+            // Try to find the element in the source site and then in the target site
+            $sourceElement = Craft::$app->getElements()->getElementById($sourceId, null, $sourceSiteId);
+
+            if ($sourceElement) {
+                // Get the canonical ID and look for it in the target site
+                $targetElement = Craft::$app->getElements()->getElementById(
+                    $sourceElement->canonicalId,
+                    get_class($sourceElement),
+                    $targetSiteId
+                );
+
+                if ($targetElement) {
+                    // Replace the ID with the target site's element ID
+                    if (is_array($item)) {
+                        $item['id'] = $targetElement->id;
+                    } elseif (is_object($item)) {
+                        $item->id = $targetElement->id;
+                    } else {
+                        $item = $targetElement->id;
+                    }
+                }
+            }
+
+            $remappedIds[] = $item;
+        }
+
+        return $remappedIds;
+    }
 
     /**
      * @inheritdoc

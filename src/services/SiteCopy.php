@@ -369,8 +369,8 @@ class SiteCopy extends Component
                     $checkFrom = $element->canonicalId;
                 } elseif ($criteriaField === 'handle') {
                     $checkFrom = $element->{$criteriaField};
-                } elseif (isset($element[$criteriaField]['handle'])) {
-                    $checkFrom = $element[$criteriaField]['handle'];
+                   } elseif (isset($element->{$criteriaField}->handle)) {
+                    $checkFrom = $element->{$criteriaField}->handle;
                 }
 
                 $check = false;
