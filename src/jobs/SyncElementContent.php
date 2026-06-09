@@ -171,10 +171,9 @@ class SyncElementContent extends BaseJob
             // Check if this is a linking field (Relations or Link field)
             $fieldClass = get_class($field);
 
-            // Handle different types of linking fields
+            // Handle Relations fields and other relation-based linking fields
             if (
                 strpos($fieldClass, 'Relations') !== false ||
-                strpos($fieldClass, 'Link') !== false ||
                 method_exists($field, 'getTargetSiteId')
             ) {
                 // For array values (multiple linked elements)
@@ -183,8 +182,59 @@ class SyncElementContent extends BaseJob
                 }
             }
         }
+        unset($value);
+
+        // Craft's native Link field stores element links as reference tags that embed
+        // the source site id, e.g. {entry:123@5:url}. These tags can live anywhere in
+        // the serialized structure (including nested inside Matrix / nested-entry
+        // fields), so walk the whole tree and re-point them at the target site.
+        $this->remapLinkRefTags($fieldValues, $sourceSiteId, $targetSiteId);
 
         return $fieldValues;
+    }
+
+    /**
+     * Recursively rewrite Craft Link field element reference tags so they point at
+     * the target site, e.g. `{entry:123@5:url}` => `{entry:123@9:url}`.
+     *
+     * The element id in a reference tag is canonical (shared across sites), so only
+     * the embedded site id needs to change. The rewrite is only applied when the
+     * linked element actually exists in the target site.
+     *
+     * @param mixed $value The serialized value to walk (passed by reference)
+     * @param int $sourceSiteId The source site ID
+     * @param int $targetSiteId The target site ID
+     */
+    protected function remapLinkRefTags(&$value, $sourceSiteId, $targetSiteId): void
+    {
+        if (!is_array($value)) {
+            return;
+        }
+
+        // A serialized Link field value looks like:
+        // ['type' => 'entry', 'value' => '{entry:123@5:url}', ...]
+        if (
+            isset($value['type'], $value['value']) &&
+            is_string($value['value']) &&
+            preg_match('/^\{(\w+):(\d+)(?:@(\d+))?:url\}$/', $value['value'], $matches)
+        ) {
+            $refHandle = $matches[1];
+            $elementId = (int)$matches[2];
+
+            // Only rewrite if the linked element actually exists in the target site.
+            $targetElement = Craft::$app->getElements()->getElementById($elementId, null, $targetSiteId);
+
+            if ($targetElement) {
+                $value['value'] = sprintf('{%s:%s@%s:url}', $refHandle, $elementId, $targetSiteId);
+            }
+
+            return;
+        }
+
+        foreach ($value as &$child) {
+            $this->remapLinkRefTags($child, $sourceSiteId, $targetSiteId);
+        }
+        unset($child);
     }
 
     /**
