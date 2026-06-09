@@ -43,53 +43,55 @@ class SiteCopy extends Plugin
             ]
         );
 
-        if (Craft::$app->getRequest()->getIsCpRequest()) {
-            Event::on(
-                CraftVariable::class,
-                CraftVariable::EVENT_INIT,
-                function (Event $event) {
-                    $variable = $event->sender;
-                    $variable->set('sitecopy', services\SiteCopy::class);
-                }
-            );
-
-            Event::on(
-                Element::class,
-                Element::EVENT_DEFINE_SIDEBAR_HTML,
-                function (DefineHtmlEvent $event) {
-                    $element = $event->sender;
-
-                    if (in_array(get_class($element), [Entry::class, Asset::class, 'craft\commerce\elements\Product', Category::class])) {
-                        $event->html .= $this->addSitecopyWidget($event->sender);
+        Craft::$app->onInit(function() {
+            if (Craft::$app->getRequest()->getIsCpRequest()) {
+                Event::on(
+                    CraftVariable::class,
+                    CraftVariable::EVENT_INIT,
+                    function (Event $event) {
+                        $variable = $event->sender;
+                        $variable->set('sitecopy', services\SiteCopy::class);
                     }
-                }
-            );
+                );
 
-            Craft::$app->view->hook(
-                'cp.globals.edit.content',
-                function (array &$context) {
-                    /** @var $element GlobalSet */
-                    $element = $context['globalSet'];
+                Event::on(
+                    Element::class,
+                    Element::EVENT_DEFINE_SIDEBAR_HTML,
+                    function (DefineHtmlEvent $event) {
+                        $element = $event->sender;
 
-                    return $this->addSitecopyWidget($element);
-                }
-            );
+                        if (in_array(get_class($element), [Entry::class, Asset::class, 'craft\commerce\elements\Product', Category::class])) {
+                            $event->html .= $this->addSitecopyWidget($event->sender);
+                        }
+                    }
+                );
 
-            Craft::$app->view->hook(
-                'cp.commerce.product.edit.details',
-                function (array &$context) {
-                    return $this->addSitecopyWidget($context['product']);
-                }
-            );
+                Craft::$app->view->hook(
+                    'cp.globals.edit.content',
+                    function (array &$context) {
+                        /** @var $element GlobalSet */
+                        $element = $context['globalSet'];
 
-            Event::on(
-                Elements::class,
-                Elements::EVENT_AFTER_SAVE_ELEMENT,
-                function (ElementEvent $event) {
-                    $this->sitecopy->syncElementContent($event, Craft::$app->request->post('sitecopy', []));
-                }
-            );
-        }
+                        return $this->addSitecopyWidget($element);
+                    }
+                );
+
+                Craft::$app->view->hook(
+                    'cp.commerce.product.edit.details',
+                    function (array &$context) {
+                        return $this->addSitecopyWidget($context['product']);
+                    }
+                );
+
+                Event::on(
+                    Elements::class,
+                    Elements::EVENT_AFTER_SAVE_ELEMENT,
+                    function (ElementEvent $event) {
+                        $this->sitecopy->syncElementContent($event, Craft::$app->request->post('sitecopy', []));
+                    }
+                );
+            }
+        });
     }
 
     /**

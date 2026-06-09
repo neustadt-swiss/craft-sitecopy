@@ -1,7 +1,11 @@
 # Changelog
 
 
-## 3.1.3 - 2026-06-09
+## 3.1.6 - 2026-06-09
+### Fixed
+- Fixed "Element query executed before Craft is fully initialized" warning by deferring event listener registration using `Craft::$app->onInit()` [#25](https://github.com/neustadt-swiss/craft-sitecopy/issues/25)
+
+## 3.1.5 - 2026-06-09
 ### Fixed
 - Fixed Link field remapping - selected entries now correctly link to the target site instead of remaining linked to the source site
 - Improved element ID mapping across multiple sites
