@@ -79,7 +79,11 @@ class SyncElementContent extends BaseJob
                 $variantFields = [];
 
                 foreach ($sourceElement->getVariants() as $variant) {
-                    $variantFields[$variant->id] = $variant->getFieldValues();
+                    $variantFields[$variant->id]['custom_fields'] = $variant->getFieldValues();
+                    
+                    if (in_array('title', $this->attributesToCopy)) {
+                        $variantFields[$variant->id]['title'] = $variant->title;
+                    }
                 }
 
                 $tmp = $variantFields;
@@ -114,8 +118,12 @@ class SyncElementContent extends BaseJob
 
                         if ($variant) {
                             // Remap linked elements in variant fields
-                            $value = $this->remapLinkedElements($value, $this->sourceSiteId, $siteId, $variant);
-                            $variant->setFieldValues($value);
+                            $value = $this->remapLinkedElements($value['custom_fields'], $this->sourceSiteId, $siteId, $variant);
+                            $variant->setFieldValues($value['custom_fields']);
+
+                            if (isset($value['title'])) {
+                                $variant->title = $value['title'];
+                            }
 
                             $variant->setScenario(Element::SCENARIO_ESSENTIALS);
                             Craft::$app->getElements()->saveElement($variant);
