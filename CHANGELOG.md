@@ -1,6 +1,18 @@
 # Changelog
 
 
+## 3.2.0 - 2026-06-15
+### Added
+
+- Restored bulk copy feature: select multiple entries/assets/categories/products in the element index and copy them to another site in one operation
+- Bulk copy is available for entries (section-filtered), assets, categories, and Commerce products in multisite setups
+- Commerce variant titles are now copied when `title` is included in the attributes to copy
+
+### Fixed
+
+- Fixed "Select All" checkbox scoping in element slideout containers — the toggle now correctly targets only checkboxes within its own widget instead of all checkboxes on the page
+- Fixed variant custom fields being wiped when copying variant titles (regression that would have been introduced by PR #30)
+
 ## 3.1.6 - 2026-06-09
 ### Fixed
 - Fixed "Element query executed before Craft is fully initialized" warning by deferring event listener registration using `Craft::$app->onInit()` [#25](https://github.com/neustadt-swiss/craft-sitecopy/issues/25)
