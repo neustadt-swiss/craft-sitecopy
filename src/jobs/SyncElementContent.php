@@ -143,7 +143,9 @@ class SyncElementContent extends BaseJob
             $siteElement->setScenario(Element::SCENARIO_ESSENTIALS);
 
             try {
-                $elementsService->saveElement($siteElement);
+                // Disable propagation to prevent Craft from cascading nested entries
+                // (e.g. Matrix blocks) back to the source site, which would cause duplicates.
+                $elementsService->saveElement($siteElement, true, false);
             } finally {
                 $mutex->release($lockKey);
             }

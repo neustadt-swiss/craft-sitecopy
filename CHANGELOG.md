@@ -1,6 +1,11 @@
 # Changelog
 
 
+## 3.2.1 - 2026-06-15
+### Fixed
+
+- Fixed Matrix (nested) entries being duplicated on the source site when copying to another site ([#24](https://github.com/neustadt-swiss/craft-sitecopy/issues/24))
+
 ## 3.2.0 - 2026-06-15
 ### Added
 
