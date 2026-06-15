@@ -14,11 +14,14 @@ use craft\elements\Asset;
 use craft\elements\Category;
 use craft\elements\Entry;
 use craft\elements\GlobalSet;
+use craft\commerce\elements\Product;
 use craft\events\DefineHtmlEvent;
 use craft\events\ElementEvent;
+use craft\events\RegisterElementActionsEvent;
 use craft\services\Elements;
 use craft\web\twig\variables\CraftVariable;
 use Exception;
+use neustadt\sitecopy\elements\actions\BulkCopy;
 use neustadt\sitecopy\models\SettingsModel;
 use yii\base\Event;
 
@@ -65,6 +68,53 @@ class SiteCopy extends Plugin
                         }
                     }
                 );
+
+                if (Craft::$app->getIsMultiSite() && Craft::$app->getSites()->getTotalEditableSites() > 1) {
+                    Event::on(
+                        Asset::class,
+                        Element::EVENT_REGISTER_ACTIONS,
+                        function (RegisterElementActionsEvent $event) {
+                            $event->actions[] = new BulkCopy();
+                        }
+                    );
+
+                    Event::on(
+                        Product::class,
+                        Element::EVENT_REGISTER_ACTIONS,
+                        function (RegisterElementActionsEvent $event) {
+                            if (strpos($event->source, 'productType:') !== false) {
+                                $event->actions[] = new BulkCopy();
+                            }
+                        }
+                    );
+
+                    Event::on(
+                        Category::class,
+                        Element::EVENT_REGISTER_ACTIONS,
+                        function (RegisterElementActionsEvent $event) {
+                            $event->actions[] = new BulkCopy();
+                        }
+                    );
+
+                    Event::on(
+                        Entry::class,
+                        Element::EVENT_REGISTER_ACTIONS,
+                        function (RegisterElementActionsEvent $event) {
+                            if (strpos($event->source, 'section:') !== false) {
+                                try {
+                                    $sectionUid = explode('section:', $event->source)[1];
+                                    $section = Craft::$app->getEntries()->getSectionByUid($sectionUid);
+
+                                    if ($section && $section->getHasMultiSiteEntries()) {
+                                        $event->actions[] = BulkCopy::class;
+                                    }
+                                } catch (\Exception $e) {
+                                    Craft::error($e->getMessage());
+                                }
+                            }
+                        }
+                    );
+                }
 
                 Craft::$app->view->hook(
                     'cp.globals.edit.content',
