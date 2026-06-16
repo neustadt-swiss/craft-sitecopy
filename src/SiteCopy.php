@@ -189,14 +189,29 @@ class SiteCopy extends Plugin
 
         $currentSite = $element->siteId ?? null;
 
+        // Build the per-field selection list when "fields" is in the configured attributes.
+        $siteCopyFields = [];
+        $siteCopyFieldHandles = [];
+        if (in_array('fields', $this->sitecopy->getAttributesToCopy())) {
+            $fieldLayout = $element->getFieldLayout();
+            if ($fieldLayout) {
+                foreach ($fieldLayout->getCustomFields() as $field) {
+                    $siteCopyFields[] = ['value' => $field->handle, 'label' => $field->name];
+                    $siteCopyFieldHandles[] = $field->handle;
+                }
+            }
+        }
+
         return Craft::$app->view->renderTemplate(
             'site-copy-x/_cp/elementsEdit',
             [
-                'siteId'          => $element->siteId,
-                'supportedSites'  => $sites,
-                'siteCopyEnabled' => $siteCopyEnabled,
-                'selectedSites'   => $selectedSites,
-                'currentSite'     => $currentSite,
+                'siteId'               => $element->siteId,
+                'supportedSites'       => $sites,
+                'siteCopyEnabled'      => $siteCopyEnabled,
+                'selectedSites'        => $selectedSites,
+                'currentSite'          => $currentSite,
+                'siteCopyFields'       => $siteCopyFields,
+                'siteCopyFieldHandles' => $siteCopyFieldHandles,
             ]
         );
     }

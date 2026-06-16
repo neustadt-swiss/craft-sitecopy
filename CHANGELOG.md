@@ -1,6 +1,11 @@
 # Changelog
 
 
+## 3.3.0 - 2026-06-15
+### Added
+
+- Per-field copy selection: when "Fields (Content)" is enabled in plugin settings, the sidebar widget now shows a checkbox for each field in the element's field layout, letting editors choose which fields to copy on each save
+
 ## 3.2.1 - 2026-06-15
 ### Fixed
 

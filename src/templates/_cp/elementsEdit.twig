@@ -27,6 +27,21 @@
                 name: 'sitecopy[sourceSite]',
                 value: currentSite ?? null,
             }) }}
+
+            {% if siteCopyFields is defined and siteCopyFields is not empty %}
+                <hr>
+                {{ forms.hidden({
+                    name: 'sitecopy[hasFieldSelection]',
+                    value: '1',
+                }) }}
+                {{ forms.checkboxGroupField({
+                    label: "Which fields to copy?"|t('site-copy-x'),
+                    id: 'siteCopy-fields',
+                    name: 'sitecopy[fieldsToSync]',
+                    options: siteCopyFields,
+                    values: siteCopyFieldHandles,
+                }) }}
+            {% endif %}
         </div>
     </div>
 {% endif %}

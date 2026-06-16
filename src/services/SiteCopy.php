@@ -302,11 +302,18 @@ class SiteCopy extends Component
         }
 
         if (!empty($matchingSites)) {
+            // If the field-selection UI was rendered, respect the user's selection.
+            // A hidden marker (`hasFieldSelection`) is always submitted alongside the
+            // field checkboxes, so we can tell "all unchecked" apart from "UI not shown".
+            $hasFieldSelection = ($elementSettings['hasFieldSelection'] ?? null) === '1';
+            $fieldsToSync = $hasFieldSelection ? ($elementSettings['fieldsToSync'] ?? []) : null;
+
             $job = new SyncElementContent([
                 'elementId'        => (int)$entry->id,
                 'sourceSiteId'     => $elementSettings['sourceSite'],
                 'sites'            => $matchingSites,
                 'attributesToCopy' => $attributesToCopy,
+                'fieldsToSync'     => $fieldsToSync,
             ]);
 
             Craft::$app->onAfterRequest(function() use ($job) {
@@ -316,12 +323,16 @@ class SiteCopy extends Component
         }
     }
 
-    public function getSerializedFieldValues(Entry|craft\commerce\elements\Product|Asset|GlobalSet|Category $element)
+    public function getSerializedFieldValues(Entry|craft\commerce\elements\Product|Asset|GlobalSet|Category $element, ?array $fieldsToSync = null)
     {
         $fields = $element->getFieldLayout()->getCustomFields();
         $serializedValues = [];
 
         foreach ($fields as $field) {
+            if ($fieldsToSync !== null && !in_array($field->handle, $fieldsToSync)) {
+                continue;
+            }
+
             $value = $element->getFieldValue($field->handle);
 
             if ($value instanceof ElementQuery) {
