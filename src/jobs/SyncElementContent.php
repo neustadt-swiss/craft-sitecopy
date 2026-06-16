@@ -42,6 +42,11 @@ class SyncElementContent extends BaseJob
      */
     public $attributesToCopy;
 
+    /**
+     * @var string[]|null Field handles to copy; null means all fields
+     */
+    public $fieldsToSync = null;
+
     // Public Methods
     // =========================================================================
 
@@ -66,7 +71,7 @@ class SyncElementContent extends BaseJob
 
         foreach ($this->attributesToCopy as $attribute) {
             if ($attribute == 'fields') {
-                $tmp = SiteCopy::getInstance()->sitecopy->getSerializedFieldValues($sourceElement);
+                $tmp = SiteCopy::getInstance()->sitecopy->getSerializedFieldValues($sourceElement, $this->fieldsToSync);
 
                 if (empty($tmp)) {
                     continue;
