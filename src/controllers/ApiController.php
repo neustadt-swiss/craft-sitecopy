@@ -31,9 +31,11 @@ class ApiController extends Controller
                 ]);
             }
 
-            $supportedSites = $element->getSupportedSites();
+            $supportedSites = Craft::$app->getSites()->getAllSites();
             break;
         }
+
+        $elementTypeClass = substr($elementType, strrpos($elementType, '\\') + 1);
 
         $html = Craft::$app->view->renderTemplate(
             'site-copy-x/_cp/bulkCopyOverlay',
@@ -41,6 +43,7 @@ class ApiController extends Controller
                 'siteId'          => $siteId,
                 'supportedSites'  => $supportedSites,
                 'elementCount'    => count($elements),
+                'elementType'     => $elementTypeClass,
                 'siteCopyEnabled' => 1,
                 'selectedSites'   => [],
                 'currentSite'     => Craft::$app->getSites()->getCurrentSite(),
@@ -50,6 +53,58 @@ class ApiController extends Controller
         return $this->asJson([
             'html'    => $html,
             'success' => true,
+        ]);
+    }
+
+    public function actionCheckSiteAvailability(): Response
+    {
+        $request = Craft::$app->getRequest();
+        $elementId = $request->getParam('elementId');
+        $elementType = $request->getParam('elementType');
+        $sourceSiteId = $request->getParam('sourceSiteId');
+
+        $element = Craft::$app->elements->getElementById($elementId, null, $sourceSiteId);
+
+        if (!$element) {
+            return $this->asJson([
+                'success' => false,
+                'error'   => 'Element not found',
+            ]);
+        }
+
+        $allSites = Craft::$app->getSites()->getAllSites();
+        $user = Craft::$app->getUser()->getIdentity();
+        $availableSites = [];
+        $unavailableSites = [];
+
+        foreach ($allSites as $site) {
+            if (!$user->can('editsite:' . $site->uid)) {
+                continue;
+            }
+
+            $siteElement = Craft::$app->elements->getElementById(
+                $element->id,
+                null,
+                $site->id
+            );
+
+            if ($siteElement) {
+                $availableSites[] = [
+                    'id'   => $site->id,
+                    'name' => $site->name,
+                ];
+            } else {
+                $unavailableSites[] = [
+                    'id'   => $site->id,
+                    'name' => $site->name,
+                ];
+            }
+        }
+
+        return $this->asJson([
+            'success'          => true,
+            'availableSites'   => $availableSites,
+            'unavailableSites' => $unavailableSites,
         ]);
     }
 

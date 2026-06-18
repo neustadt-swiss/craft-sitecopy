@@ -176,7 +176,7 @@ class SiteCopy extends Plugin
     private function addSitecopyWidget(Entry|craft\commerce\elements\Product|Asset|GlobalSet|Category $element)
     {
         $isNew = $element->id === null;
-        $sites = $element->getSupportedSites();
+        $sites = Craft::$app->getSites()->getAllSites();
 
         if ($isNew || count($sites) < 2) {
             return;
@@ -206,6 +206,7 @@ class SiteCopy extends Plugin
             'site-copy-x/_cp/elementsEdit',
             [
                 'siteId'               => $element->siteId,
+                'elementId'            => $element->id,
                 'supportedSites'       => $sites,
                 'siteCopyEnabled'      => $siteCopyEnabled,
                 'selectedSites'        => $selectedSites,

@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.4.2 - 2026-06-18
+### Added
+
+- Cross-sitegroup manual copy: users can now copy content to sites in different site groups, not just within the same site group (requested in [#22](https://github.com/neustadt-swiss/craft-sitecopy/issues/22))
+- Inline warning in the sidebar widget and bulk copy overlay: when a selected target site does not have the element yet, a yellow notice lists the affected sites as soon as a checkbox is ticked, and disappears when the checkbox is unchecked
+- Warning logs when a target site element doesn't exist during copy operations, helping diagnose why content wasn't copied to all selected sites
+
+### Changed
+
+- Manual copy UI (sidebar widget and bulk copy) now shows all available sites instead of only sites in the same propagation group, enabling more flexible content distribution workflows
 
 ## 3.3.0 - 2026-06-15
 ### Added

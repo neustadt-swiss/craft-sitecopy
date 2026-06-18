@@ -263,7 +263,7 @@ class SiteCopy extends Component
             return;
         }
 
-        $supportedSites = $entry->getSupportedSites();
+        $allSites = Craft::$app->getSites()->getAllSites();
 
         $targets = $elementSettings['targets'] ?? [];
 
@@ -274,17 +274,17 @@ class SiteCopy extends Component
         $matchingSites = [];
         $user = Craft::$app->getUser()->getIdentity();
 
-        foreach ($supportedSites as $supportedSite) {
-            $siteId = $supportedSite;  // For Products as no siteId key exists
-
-            if (is_array($siteId) && isset($siteId['siteId'])) {
-                $siteId = $siteId['siteId'];
-            }
-
-            $site = Craft::$app->getSites()->getSiteById($siteId);
+        foreach ($allSites as $site) {
+            $siteId = $site->id;
 
             // permissions are already handled in getSiteInputOptions(), but this is the BE validation
-            if (!$site || !$user->can('editsite:' . $site->uid)) {
+            if (!$user->can('editsite:' . $site->uid)) {
+                continue;
+            }
+
+            $matchingTarget = in_array($siteId, $targets);
+
+            if (!$matchingTarget) {
                 continue;
             }
 
@@ -294,10 +294,13 @@ class SiteCopy extends Component
                 $siteId
             );
 
-            $matchingTarget = in_array($siteId, $targets);
-
-            if ($siteElement && $matchingTarget) {
+            if ($siteElement) {
                 $matchingSites[] = (int)$siteId;
+            } else {
+                Craft::warning(
+                    "Cannot copy to site '{$site->name}' (ID: {$siteId}): element does not exist on this site.",
+                    __METHOD__
+                );
             }
         }
 

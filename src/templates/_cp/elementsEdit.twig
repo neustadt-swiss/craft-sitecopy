@@ -3,9 +3,10 @@
 {% do view.registerAssetBundle("neustadt\\sitecopy\\assetbundles\\sitecopy\\SitecopyAsset") %}
 
 {% set siteCopyTargetOptions = craft.sitecopy.getSiteInputOptions(supportedSites, [siteId]) %}
+{% set elementType = element is defined ? element.__class__|split('\\')|last : null %}
 
 {% if siteCopyTargetOptions is not empty %}
-    <div id="sitecopy" class="meta pane sitecopy">
+    <div id="sitecopy" class="meta pane sitecopy" data-element-id="{{ elementId ?? '' }}" data-source-site-id="{{ currentSite ?? '' }}">
         {{ forms.lightswitchField({
             label: 'Copy to site'|t('site-copy-x'),
             id: 'siteCopy-toggle',
@@ -42,6 +43,13 @@
                     values: siteCopyFieldHandles,
                 }) }}
             {% endif %}
+            <div id="sitecopy-unavailable-warning" class="hidden" style="margin-top: 8px; padding: 8px 10px; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 4px; font-size: 13px; color: #92400e;"></div>
         </div>
     </div>
+
+    <style>
+        #sitecopy-options:not(.hidden) {
+            padding-bottom: 24px;
+        }
+    </style>
 {% endif %}
