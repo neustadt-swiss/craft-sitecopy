@@ -1,6 +1,6 @@
 <?php
 
-namespace novu\sitecopy\assetbundles\sitecopy;
+namespace teamnovu\sitecopy\assetbundles\sitecopy;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
@@ -15,7 +15,7 @@ class SitecopyAsset extends AssetBundle
      */
     public function init()
     {
-        $this->sourcePath = "@novu/sitecopy/assetbundles/sitecopy/dist";
+        $this->sourcePath = "@teamnovu/sitecopy/assetbundles/sitecopy/dist";
 
         $this->depends = [
             CpAsset::class,

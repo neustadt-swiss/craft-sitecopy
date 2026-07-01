@@ -4,10 +4,10 @@
  * @copyright Copyright (c) Novu
  */
 
-namespace novu\sitecopy\models;
+namespace teamnovu\sitecopy\models;
 
 use craft\base\Model;
-use novu\sitecopy\services\SiteCopy;
+use teamnovu\sitecopy\services\SiteCopy;
 
 class SettingsModel extends Model
 {
@@ -64,7 +64,7 @@ class SettingsModel extends Model
      */
     public function checkAttributesToCopy()
     {
-        $attributesToCopy = \novu\sitecopy\SiteCopy::getInstance()->sitecopy->getAttributesToCopyOptions();
+        $attributesToCopy = \teamnovu\sitecopy\SiteCopy::getInstance()->sitecopy->getAttributesToCopyOptions();
 
         $exactValues = [
             array_map(function ($x) {

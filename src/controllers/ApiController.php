@@ -1,12 +1,12 @@
 <?php
 
-namespace novu\sitecopy\controllers;
+namespace teamnovu\sitecopy\controllers;
 
 use Craft;
 use craft\elements\Entry;
 use craft\events\ElementEvent;
 use craft\web\Controller;
-use novu\sitecopy\SiteCopy;
+use teamnovu\sitecopy\SiteCopy;
 use yii\web\Response;
 
 class ApiController extends Controller

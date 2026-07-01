@@ -1,5 +1,5 @@
 {
-  "name": "novu/craft-sitecopy",
+  "name": "teamnovu/craft-sitecopy",
   "description": "This plugin makes it easy to copy the content of an entry from a site to another",
   "version": "4.0.0",
   "license": "proprietary",
@@ -10,7 +10,7 @@
   },
   "autoload": {
     "psr-4": {
-      "novu\\sitecopy\\": "src/"
+      "teamnovu\\sitecopy\\": "src/"
     }
   },
   "extra": {
@@ -18,7 +18,7 @@
     "name": "Site Copy X",
     "developer": "Novu",
     "developerUrl": "https://novu.ch",
-    "class": "novu\\sitecopy\\SiteCopy",
+    "class": "teamnovu\\sitecopy\\SiteCopy",
     "hasSettings": true
   }
 }

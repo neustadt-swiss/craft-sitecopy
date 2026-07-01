@@ -3,7 +3,7 @@
  * @link      https://novu.ch
  * @copyright Copyright (c) Novu
  */
-namespace novu\sitecopy\services;
+namespace teamnovu\sitecopy\services;
 
 use Craft;
 use craft\base\Component;
@@ -19,14 +19,14 @@ use craft\helpers\ElementHelper;
 use craft\helpers\Queue;
 use craft\models\Site;
 use Exception;
-use novu\sitecopy\jobs\SyncElementContent;
-use novu\sitecopy\models\SettingsModel;
+use teamnovu\sitecopy\jobs\SyncElementContent;
+use teamnovu\sitecopy\models\SettingsModel;
 use Throwable;
 
 /**
  * Class SiteCopy
  *
- * @package novu\sitecopy\services
+ * @package teamnovu\sitecopy\services
  */
 class SiteCopy extends Component
 {
@@ -39,7 +39,7 @@ class SiteCopy extends Component
     {
         parent::init();
 
-        $this->settings = \novu\sitecopy\SiteCopy::getInstance()->getSettings();
+        $this->settings = \teamnovu\sitecopy\SiteCopy::getInstance()->getSettings();
     }
 
     public static function getCriteriaFieldsEntries()

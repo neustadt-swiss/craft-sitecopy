@@ -4,18 +4,18 @@
  * @copyright Copyright (c) Novu
  */
 
-namespace novu\sitecopy\jobs;
+namespace teamnovu\sitecopy\jobs;
 
 use Craft;
 use craft\base\Element;
 use craft\queue\BaseJob;
-use novu\sitecopy\SiteCopy;
+use teamnovu\sitecopy\SiteCopy;
 use Exception;
 
 /**
  * Class SyncElementContent
  *
- * @package novu\sitecopy\jobs
+ * @package teamnovu\sitecopy\jobs
  */
 class SyncElementContent extends BaseJob
 {

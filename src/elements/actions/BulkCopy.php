@@ -1,10 +1,10 @@
 <?php
 
-namespace novu\sitecopy\elements\actions;
+namespace teamnovu\sitecopy\elements\actions;
 
 use Craft;
 use craft\base\ElementAction;
-use novu\sitecopy\assetbundles\sitecopy\SitecopyAsset;
+use teamnovu\sitecopy\assetbundles\sitecopy\SitecopyAsset;
 
 class BulkCopy extends ElementAction
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace novu\sitecopy\migrations;
+namespace teamnovu\sitecopy\migrations;
 
 use Craft;
 use craft\db\Migration;
-use novu\sitecopy\SiteCopy;
+use teamnovu\sitecopy\SiteCopy;
 
 /**
  * m200813_090815_RenameCombinedSettings migration.
