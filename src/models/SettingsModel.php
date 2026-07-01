@@ -1,13 +1,13 @@
 <?php
 /**
- * @link      https://neustadt.swiss
- * @copyright Copyright (c) Neustadt Agentur AG
+ * @link      https://novu.ch
+ * @copyright Copyright (c) Novu
  */
 
-namespace neustadt\sitecopy\models;
+namespace novu\sitecopy\models;
 
 use craft\base\Model;
-use neustadt\sitecopy\services\SiteCopy;
+use novu\sitecopy\services\SiteCopy;
 
 class SettingsModel extends Model
 {
@@ -64,7 +64,7 @@ class SettingsModel extends Model
      */
     public function checkAttributesToCopy()
     {
-        $attributesToCopy = \neustadt\sitecopy\SiteCopy::getInstance()->sitecopy->getAttributesToCopyOptions();
+        $attributesToCopy = \novu\sitecopy\SiteCopy::getInstance()->sitecopy->getAttributesToCopyOptions();
 
         $exactValues = [
             array_map(function ($x) {

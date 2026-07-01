@@ -1,10 +1,10 @@
 <?php
 /**
- * @link      https://neustadt.swiss
- * @copyright Copyright (c) Neustadt Agentur AG
+ * @link      https://novu.ch
+ * @copyright Copyright (c) Novu
  */
 
-namespace neustadt\sitecopy;
+namespace novu\sitecopy;
 
 use craft\base\Element;
 use craft\base\Plugin;
@@ -21,12 +21,12 @@ use craft\events\RegisterElementActionsEvent;
 use craft\services\Elements;
 use craft\web\twig\variables\CraftVariable;
 use Exception;
-use neustadt\sitecopy\elements\actions\BulkCopy;
-use neustadt\sitecopy\models\SettingsModel;
+use novu\sitecopy\elements\actions\BulkCopy;
+use novu\sitecopy\models\SettingsModel;
 use yii\base\Event;
 
 /**
- * @author    Neustadt Agentur AG
+ * @author    Novu
  * @package   Site Copy X
  * @since     0.2.0
  *

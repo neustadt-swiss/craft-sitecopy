@@ -1,21 +1,21 @@
 <?php
 /**
- * @link      https://neustadt.swiss
- * @copyright Copyright (c) Neustadt Agentur AG
+ * @link      https://novu.ch
+ * @copyright Copyright (c) Novu
  */
 
-namespace neustadt\sitecopy\jobs;
+namespace novu\sitecopy\jobs;
 
 use Craft;
 use craft\base\Element;
 use craft\queue\BaseJob;
-use neustadt\sitecopy\SiteCopy;
+use novu\sitecopy\SiteCopy;
 use Exception;
 
 /**
  * Class SyncElementContent
  *
- * @package neustadt\sitecopy\jobs
+ * @package novu\sitecopy\jobs
  */
 class SyncElementContent extends BaseJob
 {

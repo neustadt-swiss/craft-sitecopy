@@ -1,7 +1,7 @@
 {
-  "name": "nst/craft-sitecopy",
+  "name": "novu/craft-sitecopy",
   "description": "This plugin makes it easy to copy the content of an entry from a site to another",
-  "version": "3.4.2",
+  "version": "4.0.0",
   "license": "proprietary",
   "type": "craft-plugin",
   "minimum-stability": "dev",
@@ -10,15 +10,15 @@
   },
   "autoload": {
     "psr-4": {
-      "neustadt\\sitecopy\\": "src/"
+      "novu\\sitecopy\\": "src/"
     }
   },
   "extra": {
     "handle": "site-copy-x",
     "name": "Site Copy X",
-    "developer": "Neustadt",
-    "developerUrl": "https://neustadt.swiss",
-    "class": "neustadt\\sitecopy\\SiteCopy",
+    "developer": "Novu",
+    "developerUrl": "https://novu.ch",
+    "class": "novu\\sitecopy\\SiteCopy",
     "hasSettings": true
   }
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      https://neustadt.swiss
- * @copyright Copyright (c) Neustadt Agentur AG
+ * @link      https://novu.ch
+ * @copyright Copyright (c) Novu
  */
-namespace neustadt\sitecopy\services;
+namespace novu\sitecopy\services;
 
 use Craft;
 use craft\base\Component;
@@ -19,14 +19,14 @@ use craft\helpers\ElementHelper;
 use craft\helpers\Queue;
 use craft\models\Site;
 use Exception;
-use neustadt\sitecopy\jobs\SyncElementContent;
-use neustadt\sitecopy\models\SettingsModel;
+use novu\sitecopy\jobs\SyncElementContent;
+use novu\sitecopy\models\SettingsModel;
 use Throwable;
 
 /**
  * Class SiteCopy
  *
- * @package neustadt\sitecopy\services
+ * @package novu\sitecopy\services
  */
 class SiteCopy extends Component
 {
@@ -39,7 +39,7 @@ class SiteCopy extends Component
     {
         parent::init();
 
-        $this->settings = \neustadt\sitecopy\SiteCopy::getInstance()->getSettings();
+        $this->settings = \novu\sitecopy\SiteCopy::getInstance()->getSettings();
     }
 
     public static function getCriteriaFieldsEntries()

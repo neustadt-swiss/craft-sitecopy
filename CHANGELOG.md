@@ -1,9 +1,15 @@
 # Changelog
 
+## 4.0.0 - 2026-07-01
+### Changed
+
+- **Breaking:** rebranded from Neustadt to Novu. The Composer package is now `novu/craft-sitecopy` (was `nst/craft-sitecopy`) and the PHP namespace is now `novu\sitecopy` (was `neustadt\sitecopy`). If your project extends any of the plugin's classes, update your `use` statements accordingly.
+- Update your `composer.json` to require `novu/craft-sitecopy` instead of `nst/craft-sitecopy`, then run `composer update`. The plugin handle (`site-copy-x`) and all functionality are unchanged.
+
 ## 3.4.2 - 2026-06-18
 ### Added
 
-- Cross-sitegroup manual copy: users can now copy content to sites in different site groups, not just within the same site group (requested in [#22](https://github.com/neustadt-swiss/craft-sitecopy/issues/22))
+- Cross-sitegroup manual copy: users can now copy content to sites in different site groups, not just within the same site group (requested in [#22](https://github.com/novu/craft-sitecopy/issues/22))
 - Inline warning in the sidebar widget and bulk copy overlay: when a selected target site does not have the element yet, a yellow notice lists the affected sites as soon as a checkbox is ticked, and disappears when the checkbox is unchecked
 - Warning logs when a target site element doesn't exist during copy operations, helping diagnose why content wasn't copied to all selected sites
 
@@ -19,7 +25,7 @@
 ## 3.2.1 - 2026-06-15
 ### Fixed
 
-- Fixed Matrix (nested) entries being duplicated on the source site when copying to another site ([#24](https://github.com/neustadt-swiss/craft-sitecopy/issues/24))
+- Fixed Matrix (nested) entries being duplicated on the source site when copying to another site ([#24](https://github.com/novu/craft-sitecopy/issues/24))
 
 ## 3.2.0 - 2026-06-15
 ### Added
@@ -35,7 +41,7 @@
 
 ## 3.1.6 - 2026-06-09
 ### Fixed
-- Fixed "Element query executed before Craft is fully initialized" warning by deferring event listener registration using `Craft::$app->onInit()` [#25](https://github.com/neustadt-swiss/craft-sitecopy/issues/25)
+- Fixed "Element query executed before Craft is fully initialized" warning by deferring event listener registration using `Craft::$app->onInit()` [#25](https://github.com/novu/craft-sitecopy/issues/25)
 
 ## 3.1.5 - 2026-06-09
 ### Fixed
@@ -53,13 +59,13 @@
 - Site Copy X now requires Craft CMS 4.5.11
 
 ### Fixed
-- Fixed a database error that could occur when saving an entry while the copy-to-site job is running [#9](https://github.com/neustadt-swiss/craft-sitecopy/issues/9)
+- Fixed a database error that could occur when saving an entry while the copy-to-site job is running [#9](https://github.com/novu/craft-sitecopy/issues/9)
 
 ## 1.0.10 - 2023-10-19
 
 ### Changed
 
-- The list of sites to copy to is now sorted by site group to provide a better ui for multisite setups [#6](https://github.com/neustadt-swiss/craft-sitecopy/issues/6)
+- The list of sites to copy to is now sorted by site group to provide a better ui for multisite setups [#6](https://github.com/novu/craft-sitecopy/issues/6)
 
 
 ## 1.0.9 - 2023-10-16

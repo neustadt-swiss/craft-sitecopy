@@ -1,10 +1,10 @@
 <?php
 
-namespace neustadt\sitecopy\migrations;
+namespace novu\sitecopy\migrations;
 
 use Craft;
 use craft\db\Migration;
-use neustadt\sitecopy\SiteCopy;
+use novu\sitecopy\SiteCopy;
 
 /**
  * m200811_123415_OrXorChange migration.

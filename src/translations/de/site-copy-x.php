@@ -1,7 +1,7 @@
 <?php
 /**
- * @link      https://neustadt.swiss
- * @copyright Copyright (c) Neustadt Agentur AG
+ * @link      https://novu.ch
+ * @copyright Copyright (c) Novu
  */
 
 return [
