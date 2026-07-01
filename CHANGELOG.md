@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.0.0 - 2026-07-01
+## 4.0.2 - 2026-07-01
 ### Changed
 
 - **Breaking:** rebranded from Neustadt to Novu. The Composer package is now `teamnovu/craft-sitecopy` (was `nst/craft-sitecopy`) and the PHP namespace is now `teamnovu\sitecopy` (was `neustadt\sitecopy`). If your project extends any of the plugin's classes, update your `use` statements accordingly.

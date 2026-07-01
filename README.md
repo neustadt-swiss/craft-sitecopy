@@ -81,5 +81,5 @@ Craft CMS 4.5.11 or later (compatible with both Craft 4 and Craft 5).
 ## Installation
 
 ```bash
-composer require nst/craft-sitecopy
+composer require teamnovu/craft-sitecopy
 ```
