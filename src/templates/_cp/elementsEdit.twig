@@ -1,6 +1,6 @@
 {% import "_includes/forms" as forms %}
 
-{% do view.registerAssetBundle("neustadt\\sitecopy\\assetbundles\\sitecopy\\SitecopyAsset") %}
+{% do view.registerAssetBundle("teamnovu\\sitecopy\\assetbundles\\sitecopy\\SitecopyAsset") %}
 
 {% set siteCopyTargetOptions = craft.sitecopy.getSiteInputOptions(supportedSites, [siteId]) %}
 {% set elementType = element is defined ? element.__class__|split('\\')|last : null %}
